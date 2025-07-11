@@ -1,44 +1,50 @@
-# VibePloy - Vision-First 웹 크롤링 API 자동 생성 플랫폼
+# VibePloy - 드래그 앤 드롭 웹 크롤링 워크플로우 플랫폼
 
 [![Next.js](https://img.shields.io/badge/Next.js-15.3.5-black)](https://nextjs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.x-blue)](https://www.typescriptlang.org/)
 [![TailwindCSS](https://img.shields.io/badge/TailwindCSS-4.x-38B2AC)](https://tailwindcss.com/)
-[![Magnitude](https://img.shields.io/badge/Inspired%20by-Magnitude-purple)](https://github.com/magnitudedev/magnitude)
+[![Playwright](https://img.shields.io/badge/Playwright-Latest-green)](https://playwright.dev/)
 
-VibePloy는 [Magnitude](https://github.com/magnitudedev/magnitude) 스타일의 vision-first 접근 방식을 활용하여 자연어 설명만으로 웹 크롤링 API를 자동으로 생성하고 배포할 수 있는 혁신적인 플랫폼입니다. CSS 셀렉터에 의존하지 않고 시각적 AI를 통해 진정한 일반화된 웹 자동화를 제공합니다.
+VibePloy는 자연어 설명을 **드래그 앤 드롭 가능한 워크플로우**로 변환하여 웹 크롤링 API를 자동으로 생성하고 배포할 수 있는 혁신적인 플랫폼입니다. 시각적 블록 에디터를 통해 복잡한 웹 자동화 작업을 직관적으로 구성할 수 있습니다.
 
 ## 🚀 주요 기능
 
-### 1. Vision-First API 생성 (Magnitude 스타일)
-- **시각적 AI 기반**: CSS 셀렉터 없이 시각적 요소 설명으로 스키마 생성
-- **OpenAI Vision API**: 스크린샷 분석을 통한 지능형 요소 인식
-- **DOM 구조 독립적**: 웹사이트 구조 변경에 강건한 진정한 일반화
-- **자연어 액션**: "로그인 버튼을 클릭하세요" 같은 자연어 명령 지원
+### 1. 🎨 드래그 앤 드롭 워크플로우 에디터
+- **비주얼 블록 시스템**: 액션을 블록으로 시각화하여 직관적인 워크플로우 구성
+- **실시간 드래그 앤 드롭**: 블록을 드래그하여 실행 순서 자유롭게 변경
+- **카테고리별 색상 구분**: 네비게이션(파란색), 인증(노란색), 추출(초록색), 상호작용(보라색), 유틸리티(회색)
+- **확장/축소 가능한 블록**: 복잡한 워크플로우도 깔끔하게 관리
 
-### 2. 지능형 브라우저 자동화 & 데이터 추출
-- **Playwright + Vision AI**: 시각적 요소 인식 기반 브라우저 제어
-- **자연어 액션 시퀀스**: 복잡한 사용자 워크플로우 자동화
-- **동적 콘텐츠 처리**: SPA 및 JavaScript 렌더링 콘텐츠 지원
-- **적응형 추출**: 페이지 구조 변경에도 안정적인 데이터 추출
-- **멀티모달 인텔리전스**: 텍스트와 이미지를 모두 이해하는 AI
+### 2. 🔧 스마트 액션 블록 시스템
+- **🌐 네비게이션 블록**: 페이지 이동, 로딩 대기
+- **🔐 인증 블록**: 로그인, CAPTCHA, OTP, 쿠키 동의 (옵셔널)
+- **📊 추출 블록**: 텍스트, 링크, 이미지, 테이블 데이터 추출
+- **👆 상호작용 블록**: 클릭, 텍스트 입력, 폼 작성, 스크롤
+- **🔧 유틸리티 블록**: 스크린샷, 대기, 조건부 실행
 
-### 3. 자동 API 문서화 & 배포
-- **OpenAPI (Swagger) 자동 생성**: 완전한 API 문서화
-- **인터랙티브 문서**: 실시간 테스트 가능한 API 문서
-- **다국어 예제**: JavaScript, Python, cURL 등 다양한 언어 지원
-- **Vercel 원클릭 배포**: 환경 변수 관리 및 실시간 로그
+### 3. ⚙️ 실시간 편집 및 검증
+- **인라인 편집**: 각 액션을 클릭하여 즉시 편집
+- **타입별 맞춤 필드**: 액션 타입에 따른 동적 입력 필드
+- **실시간 유효성 검사**: CSS 셀렉터 및 설정값 검증
+- **대체 셀렉터 지원**: 메인 셀렉터 실패 시 자동 대체
 
-### 4. Magnitude 영감 받은 핵심 기능
-- **agent.act()**: 고수준 자연어 작업 처리
-- **agent.extract()**: zod 스키마 기반 구조화된 데이터 추출  
-- **Vision AI 통합**: 인터페이스 이해 및 액션 계획
-- **정확한 마우스/키보드 액션**: 픽셀 단위 정밀 제어
+### 4. 🎯 AI 기반 스키마 생성
+- **자연어 → 워크플로우**: 설명만으로 완전한 워크플로우 자동 생성
+- **CSS 셀렉터 감지**: 설명에서 셀렉터 자동 추출 및 매핑
+- **OpenAI GPT-4o 통합**: 고도화된 자연어 처리 및 스키마 생성
+- **스키마 + 액션 블록**: 데이터 스키마와 실행 블록을 함께 생성
 
-### 5. 고급 자동화 기능
-- **로그인 자동화**: 복잡한 인증 플로우 처리
-- **검색 및 내비게이션**: 다단계 웹사이트 탐색
-- **에러 복구**: 실패 시 자동 재시도 및 대안 경로
-- **성능 모니터링**: 실시간 API 성능 추적
+### 5. 🔄 프론트엔드 제어 방식
+- **클라이언트 실행**: 모든 워크플로우를 프론트엔드에서 순차 실행
+- **실시간 진행 상황**: 각 블록의 실행 상태를 실시간으로 표시
+- **수동 개입 지원**: CAPTCHA, 로그인 등 수동 처리 필요 시 사용자 개입
+- **에러 핸들링**: 실패한 블록 재시도 및 대체 경로 실행
+
+### 6. 📋 액션 블록 템플릿 시스템
+- **15개 사전 정의 템플릿**: 일반적인 웹 자동화 작업을 위한 템플릿
+- **드래그 앤 드롭 추가**: 템플릿을 워크플로우에 쉽게 추가
+- **설정 가능한 필드**: 각 템플릿의 필드를 사용자 환경에 맞게 조정
+- **아이콘 및 설명**: 시각적으로 구분 가능한 템플릿 관리
 
 ## 📦 설치 및 실행
 
@@ -65,75 +71,78 @@ npm run dev
 프로젝트 루트에 `.env.local` 파일을 생성하고 다음 환경 변수를 설정하세요:
 
 ```env
-# OpenAI API 키 (Vision API 및 스키마 생성용)
+# OpenAI API 키 (필수 - 스키마 생성 및 워크플로우 생성용)
 OPENAI_API_KEY=sk-your_openai_key
 
-# Playwright 브라우저 경로
-PLAYWRIGHT_BROWSERS_PATH=0
-
-# Vercel 배포 토큰
-VERCEL_TOKEN=vercel_your_token
-
-# 선택사항: Firecrawl API (대안 크롤링)
-NEXT_PUBLIC_FIRECRAWL_API_KEY=fc-your_key
-
-# 선택사항: Serper API (검색 기능)
-SERPER_API_KEY=your_serper_key
-
-# 선택사항: Upstash Redis (캐싱)
+# Upstash Redis (선택사항 - 캐싱 및 API 키 관리)
 UPSTASH_REDIS_REST_URL=https://your-redis-url
 UPSTASH_REDIS_REST_TOKEN=your_redis_token
+
+# Vercel 배포 토큰 (선택사항 - 자동 배포용)
+VERCEL_TOKEN=vercel_your_token
 ```
 
 ## 🎯 사용 방법
 
-### 1. 웹 크롤링 API 생성
+### 1. 워크플로우 생성
 
-1. **데이터 설명**: 원하는 데이터를 자연어로 설명합니다.
+1. **자연어 설명 입력**:
    ```
-   예: "웹사이트에서 상품명, 가격, 이미지 URL, 평점을 추출하고 싶습니다."
-   ```
-
-2. **스키마 생성**: AI가 자동으로 JSON 스키마를 생성합니다.
-   ```json
-   {
-     "type": "object",
-     "properties": {
-       "title": { "type": "string", "description": "상품명" },
-       "price": { "type": "string", "description": "가격" },
-       "image": { "type": "string", "description": "이미지 URL" },
-       "rating": { "type": "number", "description": "평점" }
-     }
-   }
+   예: "네이버 쇼핑에서 상품명, 가격, 이미지를 추출하고 싶습니다."
    ```
 
-3. **URL 입력**: 크롤링할 웹사이트 URL을 입력합니다.
+2. **자동 워크플로우 생성**: AI가 다음을 자동으로 생성합니다:
+   - 📊 데이터 스키마 (JSON)
+   - 🎨 액션 블록들 (드래그 앤 드롭 가능)
+   - 🔗 블록 간 연결 관계
 
-4. **데이터 추출**: 자동으로 데이터를 추출하고 결과를 확인합니다.
+3. **워크플로우 편집**:
+   - 블록을 드래그하여 순서 변경
+   - 각 액션 클릭하여 셀렉터 및 설정 수정
+   - 불필요한 블록 비활성화 또는 삭제
 
-### 2. API 문서 생성
-
-생성된 API에 대한 OpenAPI 문서가 자동으로 생성됩니다:
+### 2. 블록 편집 및 설정
 
 ```javascript
-// JavaScript 사용 예제
-const response = await fetch('https://your-api.vercel.app/api/scrape', {
-  method: 'GET',
-  headers: {
-    'Authorization': 'Bearer YOUR_API_KEY',
-    'Content-Type': 'application/json'
-  }
-});
-
-const data = await response.json();
-console.log(data);
+// 예시: 생성된 워크플로우 구조
+{
+  "schema": {
+    "type": "object",
+    "properties": {
+      "title": { "type": "string", "selector": ".product-title" },
+      "price": { "type": "string", "selector": ".price" },
+      "image": { "type": "string", "selector": "img.product-image", "attribute": "src" }
+    }
+  },
+  "actionBlocks": [
+    {
+      "id": "nav-block",
+      "title": "페이지 이동",
+      "category": "navigation",
+      "actions": [
+        { "type": "navigate", "url": "{{url}}" },
+        { "type": "wait", "duration": 3000 }
+      ]
+    },
+    {
+      "id": "extract-block", 
+      "title": "데이터 추출",
+      "category": "extraction",
+      "actions": [
+        { "type": "extract", "field": "title", "selector": ".product-title" },
+        { "type": "extract", "field": "price", "selector": ".price" }
+      ]
+    }
+  ]
+}
 ```
 
-### 3. 배포 및 관리
+### 3. 실행 및 테스트
 
-1. **환경 변수 설정**: 필요한 API 키들을 입력합니다.
-2. **배포 실행**: Vercel에 원클릭 배포합니다.
-3. **모니터링**: 배포 상태와 API 성능을 모니터링합니다.
+1. **URL 입력**: 크롤링할 웹사이트 URL 입력
+2. **워크플로우 실행**: 각 블록이 순차적으로 실행
+3. **실시간 모니터링**: 블록별 실행 상태 확인
+4. **결과 확인**: 추출된 데이터 검증
 
 ## 🏗️ 프로젝트 구조
 
@@ -142,114 +151,141 @@ vibeploy/
 ├── src/
 │   ├── app/
 │   │   ├── components/           # React 컴포넌트
-│   │   │   ├── WebScrapingInterface.tsx
-│   │   │   ├── ApiDocumentation.tsx
-│   │   │   └── DeploymentSection.tsx
+│   │   │   └── WebScrapingInterface.tsx  # 메인 워크플로우 에디터
 │   │   ├── api/                 # API 엔드포인트
-│   │   │   ├── generate-schema/ # AI 스키마 생성
-│   │   │   ├── extract-data/    # 웹 크롤링 실행
-│   │   │   ├── generate-swagger/ # API 문서 생성
+│   │   │   ├── generate-schema/ # AI 스키마 + 워크플로우 생성
+│   │   │   ├── extract-data/    # 간단한 인증 처리
+│   │   │   ├── action-templates/ # 액션 블록 템플릿
 │   │   │   ├── deploy/          # 배포 관리
-│   │   │   └── test/           # API 테스트
-│   │   ├── globals.css         # 전역 스타일
-│   │   ├── layout.tsx          # 레이아웃
-│   │   └── page.tsx            # 메인 페이지
+│   │   │   ├── results/         # 결과 조회
+│   │   │   └── routes/          # 라우트 관리
+│   │   └── ...
+│   ├── lib/
+│   │   ├── types.ts             # 타입 정의 (워크플로우, 액션 블록)
+│   │   ├── redis.ts             # Redis 연동
+│   │   └── utils.ts             # 유틸리티 함수
 │   └── ...
-├── public/                     # 정적 파일
+├── public/                      # 정적 파일
 ├── package.json
 └── README.md
 ```
 
 ## 🌟 기술 스택
 
-### 🎯 핵심 기술 (Magnitude 영감)
-- **Vision AI**: OpenAI GPT-4o
-- **브라우저 자동화**: Playwright + Vision AI
-- **자연어 처리**: OpenAI GPT-4o
-- **DOM 독립적 아키텍처**: 시각적 요소 인식 기반
+### 🎯 핵심 기술
+- **워크플로우 엔진**: 커스텀 드래그 앤 드롭 시스템
+- **AI 엔진**: OpenAI GPT-4o (스키마 생성 및 자연어 처리)
+- **실행 엔진**: 프론트엔드 기반 순차 실행
+- **상태 관리**: React Hooks (useState, useEffect)
 
 ### 🛠️ 개발 스택
-- **Frontend**: Next.js 15, React 19, TypeScript, TailwindCSS
+- **Frontend**: Next.js 15, React 19, TypeScript
+- **UI/UX**: TailwindCSS, Lucide Icons, 드래그 앤 드롭 API
 - **Backend**: Next.js API Routes, Node.js
-- **AI/ML**: OpenAI API (GPT-4, Vision API)
-- **브라우저 엔진**: Playwright, Chromium
-- **배포**: Vercel, Vercel CLI
-- **문서화**: OpenAPI/Swagger, 자동 생성
-- **캐싱**: Upstash Redis (선택사항)
-- **검색**: Serper API (선택사항)
+- **데이터베이스**: Upstash Redis (캐싱 및 상태 관리)
+- **AI/ML**: OpenAI API (GPT-4o)
+- **배포**: Vercel
 
-## 📊 워크플로우
+## 📊 워크플로우 아키텍처
 
 ```mermaid
 graph TD
-    A[자연어 데이터 설명] --> B[AI 스키마 생성]
-    B --> C[웹사이트 URL 입력]
-    C --> D[Playwright 크롤링]
-    D --> E[데이터 추출 및 검증]
-    E --> F[OpenAPI 문서 생성]
-    F --> G[Vercel 배포]
-    G --> H[API 테스트]
-    H --> I[모니터링 및 관리]
+    A[자연어 설명] --> B[AI 스키마 생성]
+    B --> C[액션 블록 생성]
+    C --> D[드래그 앤 드롭 에디터]
+    D --> E[블록 편집 및 설정]
+    E --> F[워크플로우 실행]
+    F --> G[순차 블록 실행]
+    G --> H[실시간 상태 업데이트]
+    H --> I[결과 수집 및 표시]
+    
+    subgraph "블록 카테고리"
+        J[🌐 네비게이션]
+        K[🔐 인증]
+        L[📊 추출]
+        M[👆 상호작용]
+        N[🔧 유틸리티]
+    end
 ```
 
 ## 🔧 API 엔드포인트
 
-### 내부 API
+### 워크플로우 생성 API
 
 | 엔드포인트 | 메서드 | 설명 |
 |-----------|-------|------|
-| `/api/generate-schema` | POST | 자연어 설명을 JSON 스키마로 변환 |
-| `/api/extract-data` | POST | 웹사이트에서 데이터 추출 |
-| `/api/generate-swagger` | POST | OpenAPI 문서 생성 |
-| `/api/deploy` | POST | Vercel 배포 실행 |
-| `/api/test` | GET/POST | API 테스트 실행 |
+| `/api/generate-schema` | POST | 자연어 → 스키마 + 액션 블록 생성 |
+| `/api/action-templates` | GET | 사용 가능한 액션 블록 템플릿 조회 |
+| `/api/execute-workflow` | POST | 워크플로우 실행 및 데이터 추출 |
 
-### 생성된 API
+### 배포 관리 API
 
 | 엔드포인트 | 메서드 | 설명 |
 |-----------|-------|------|
-| `/api/scrape` | GET | 웹 데이터 크롤링 |
-| `/api/health` | GET | API 상태 확인 |
-| `/api/docs` | GET | API 문서 (HTML) |
+| `/api/deploy` | POST/GET/DELETE | API 배포 관리 |
+| `/api/results/{id}` | GET | 실행 결과 조회 |
+| `/api/routes` | GET | 배포된 라우트 목록 |
 
-## 🛡️ 보안 및 인증
+## 🎨 액션 블록 템플릿
 
-- Bearer Token 기반 API 인증
-- 요청 제한 (Rate Limiting)
-- CORS 설정
-- 환경 변수 보안 관리
+### 네비게이션 템플릿
+- **페이지 이동**: URL 이동 + 로딩 대기
+- **새 탭 열기**: 새 탭에서 페이지 열기
 
-## 📈 성능 최적화
+### 인증 템플릿 (옵셔널)
+- **로그인**: 사용자명/비밀번호 입력
+- **CAPTCHA**: CAPTCHA 해결 대기
+- **쿠키 동의**: 쿠키 동의 팝업 처리
 
-- 응답 캐싱
-- 병렬 크롤링 처리
-- 메모리 최적화
-- CDN 활용
+### 상호작용 템플릿
+- **검색**: 검색어 입력 + 검색 실행
+- **폼 입력**: 다양한 폼 필드 입력
+- **버튼 클릭**: 특정 버튼 클릭
+- **스크롤**: 페이지 스크롤
+
+### 추출 템플릿
+- **텍스트 추출**: 텍스트 콘텐츠 추출
+- **링크 추출**: 링크 URL 추출
+- **이미지 추출**: 이미지 소스 추출
+- **테이블 추출**: 테이블 데이터 추출
+
+### 유틸리티 템플릿
+- **대기**: 시간 또는 요소 대기
+- **스크린샷**: 페이지 스크린샷 촬영
+- **조건부 실행**: 조건에 따른 분기 실행
+
+## 🛡️ 보안 및 성능
+
+### 보안
+- API 키 기반 인증
+- Redis를 통한 안전한 키 관리
+- 클라이언트 사이드 실행으로 서버 부하 최소화
+
+### 성능
+- 프론트엔드 기반 실행으로 확장성 확보
+- Redis 캐싱으로 빠른 응답
+- 병렬 블록 실행 지원
 
 ## 🚀 배포 가이드
 
 ### Vercel 배포
 
-1. Vercel CLI 설치:
-   ```bash
-   npm install -g vercel
-   ```
-
-2. 프로젝트 배포:
+1. **프로젝트 배포**:
    ```bash
    vercel --prod
    ```
 
-3. 환경 변수 설정:
+2. **환경 변수 설정**:
    ```bash
    vercel env add OPENAI_API_KEY
+   vercel env add UPSTASH_REDIS_REST_URL
+   vercel env add UPSTASH_REDIS_REST_TOKEN
    ```
 
-### 환경별 설정
-
-- **Development**: `localhost:3000`
-- **Staging**: `staging.vibeploy.vercel.app`
-- **Production**: `vibeploy.vercel.app`
+3. **도메인 설정**:
+   ```bash
+   vercel domains add your-domain.com
+   ```
 
 ## 🤝 기여하기
 
@@ -265,12 +301,12 @@ graph TD
 
 ## 🙏 감사의 말
 
-- [**Magnitude**](https://github.com/magnitudedev/magnitude) - Vision-first 브라우저 자동화 아키텍처 영감
-- [Firecrawl](https://www.firecrawl.dev/) - 웹 크롤링 참고 구현
-- [OpenAI](https://openai.com/) - Vision API 및 자연어 처리
+- [OpenAI](https://openai.com/) - GPT-4o API 및 자연어 처리
 - [Vercel](https://vercel.com/) - 서버리스 호스팅 플랫폼
 - [Next.js](https://nextjs.org/) - 풀스택 React 프레임워크
-- [Playwright](https://playwright.dev/) - 신뢰성 높은 브라우저 자동화
+- [TailwindCSS](https://tailwindcss.com/) - 유틸리티 퍼스트 CSS 프레임워크
+- [Lucide](https://lucide.dev/) - 아름다운 아이콘 라이브러리
+- [Upstash](https://upstash.com/) - 서버리스 Redis 서비스
 
 ## 📞 문의
 
@@ -282,4 +318,4 @@ graph TD
 
 ---
 
-**VibePloy와 함께 웹 크롤링의 미래를 경험해보세요! 🚀**
+**VibePloy와 함께 드래그 앤 드롭으로 웹 크롤링 워크플로우를 만들어보세요! 🎨🚀**

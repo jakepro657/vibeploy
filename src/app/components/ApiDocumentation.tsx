@@ -23,19 +23,63 @@ export function ApiDocumentation({ generatedApi, onNext }: ApiDocumentationProps
 
     setIsGenerating(true);
     try {
-      const response = await fetch('/api/generate-swagger', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
+      // 존재하지 않는 API 호출 대신 직접 Swagger 스펙 생성
+      const swagger = {
+        openapi: '3.0.0',
+        info: {
+          title: 'VibePloy 웹 크롤링 API',
+          version: '1.0.0',
+          description: generatedApi.description || '자동 생성된 웹 크롤링 API'
         },
-        body: JSON.stringify(generatedApi),
-      });
+        servers: [
+          {
+            url: 'http://localhost:3000',
+            description: '개발 서버'
+          }
+        ],
+        paths: {
+          '/api/execute-workflow': {
+            post: {
+              summary: '워크플로우 실행',
+              description: '지정된 워크플로우를 실행하여 웹 데이터를 추출합니다.',
+              requestBody: {
+                required: true,
+                content: {
+                  'application/json': {
+                    schema: {
+                      type: 'object',
+                      properties: {
+                        url: { type: 'string', description: '크롤링할 웹사이트 URL' },
+                        executeWorkflow: { type: 'boolean', description: '워크플로우 실행 여부' },
+                        parameters: { type: 'object', description: '워크플로우 파라미터' }
+                      },
+                      required: ['url']
+                    }
+                  }
+                }
+              },
+              responses: {
+                '200': {
+                  description: '성공',
+                  content: {
+                    'application/json': {
+                      schema: generatedApi.schema || {
+                        type: 'object',
+                        properties: {
+                          success: { type: 'boolean' },
+                          data: { type: 'object' }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      };
 
-      if (!response.ok) {
-        throw new Error('Swagger 문서 생성에 실패했습니다.');
-      }
-
-      const { swagger, endpoint } = await response.json();
+      const endpoint = 'http://localhost:3000/api/execute-workflow';
       setSwaggerSpec(swagger);
       setApiEndpoint(endpoint);
     } catch (error) {
@@ -54,11 +98,15 @@ export function ApiDocumentation({ generatedApi, onNext }: ApiDocumentationProps
   const exampleUsage = {
     javascript: `// JavaScript 예제
 const response = await fetch('${apiEndpoint}', {
-  method: 'GET',
+  method: 'POST',
   headers: {
-    'Authorization': 'Bearer YOUR_API_KEY',
     'Content-Type': 'application/json'
-  }
+  },
+  body: JSON.stringify({
+    url: '${generatedApi?.url || 'https://example.com'}',
+    executeWorkflow: true,
+    parameters: {}
+  })
 });
 
 const data = await response.json();
@@ -67,19 +115,24 @@ console.log(data);`,
     python: `# Python 예제
 import requests
 
-headers = {
-    'Authorization': 'Bearer YOUR_API_KEY',
-    'Content-Type': 'application/json'
+data = {
+    'url': '${generatedApi?.url || 'https://example.com'}',
+    'executeWorkflow': True,
+    'parameters': {}
 }
 
-response = requests.get('${apiEndpoint}', headers=headers)
-data = response.json()
-print(data)`,
+response = requests.post('${apiEndpoint}', json=data)
+result = response.json()
+print(result)`,
     
     curl: `# cURL 예제
-curl -X GET '${apiEndpoint}' \\
-  -H 'Authorization: Bearer YOUR_API_KEY' \\
-  -H 'Content-Type: application/json'`
+curl -X POST '${apiEndpoint}' \\
+  -H 'Content-Type: application/json' \\
+  -d '{
+    "url": "${generatedApi?.url || 'https://example.com'}",
+    "executeWorkflow": true,
+    "parameters": {}
+  }'`
   };
 
   if (!generatedApi) {
@@ -104,10 +157,10 @@ curl -X GET '${apiEndpoint}' \\
         <h3 className="text-lg font-semibold mb-3">API 정보</h3>
         <div className="space-y-2">
           <div>
-            <span className="font-medium">설명:</span> {generatedApi.description}
+            <span className="font-medium">설명:</span> {generatedApi.description || '웹 크롤링 API'}
           </div>
           <div>
-            <span className="font-medium">소스 URL:</span> {generatedApi.url}
+            <span className="font-medium">소스 URL:</span> {generatedApi.url || 'N/A'}
           </div>
           {apiEndpoint && (
             <div>

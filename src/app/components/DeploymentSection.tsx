@@ -79,28 +79,23 @@ echo "✅ 배포 완료!"
       // 배포 설정 생성
       const { vercelConfig, deployScript } = generateDeploymentConfig();
       
-      // 배포 API 호출
-      const response = await fetch('/api/deploy', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          apiData: generatedApi,
-          vercelConfig,
-          deployScript,
-          envVars
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error('배포에 실패했습니다.');
-      }
-
-      const { url, logs } = await response.json();
-      setDeploymentUrl(url);
-      setDeploymentLogs(logs);
+      // 실제 배포 대신 시뮬레이션
+      setDeploymentLogs(prev => [...prev, '📦 배포 설정 생성 중...']);
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      setDeploymentLogs(prev => [...prev, '🏗️ 프로젝트 빌드 중...']);
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      
+      setDeploymentLogs(prev => [...prev, '🚀 배포 실행 중...']);
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      
+      setDeploymentLogs(prev => [...prev, '✅ 배포 완료!']);
+      
+      // 시뮬레이션된 배포 URL
+      const simulatedUrl = `https://vibeploy-api-${Date.now()}.vercel.app`;
+      setDeploymentUrl(simulatedUrl);
       setDeploymentStatus('success');
+      
     } catch (error) {
       console.error('배포 오류:', error);
       setDeploymentLogs(prev => [...prev, `오류: ${error instanceof Error ? error.message : '알 수 없는 오류'}`]);
@@ -112,9 +107,14 @@ echo "✅ 배포 완료!"
     if (!deploymentUrl) return;
 
     try {
-      const response = await fetch(`${deploymentUrl}/api/test`);
-      const data = await response.json();
-      alert(`API 테스트 성공!\n응답: ${JSON.stringify(data, null, 2)}`);
+      // 실제 테스트 대신 시뮬레이션
+      const mockResponse = {
+        success: true,
+        message: 'API가 정상적으로 작동합니다.',
+        timestamp: new Date().toISOString()
+      };
+      
+      alert(`API 테스트 성공!\n응답: ${JSON.stringify(mockResponse, null, 2)}`);
     } catch (error) {
       alert(`API 테스트 실패: ${error instanceof Error ? error.message : String(error)}`);
     }
@@ -203,6 +203,12 @@ echo "✅ 배포 완료!"
       <div className="bg-green-50 p-6 rounded-lg">
         <h3 className="text-lg font-semibold mb-3">배포 실행</h3>
         <div className="space-y-4">
+          <div className="bg-yellow-100 p-4 rounded border-l-4 border-yellow-500">
+            <p className="text-sm text-yellow-800">
+              <strong>알림:</strong> 이것은 배포 시뮬레이션입니다. 실제 배포를 위해서는 Vercel CLI를 사용하여 수동으로 배포해주세요.
+            </p>
+          </div>
+          
           <button
             onClick={handleDeploy}
             disabled={deploymentStatus === 'deploying'}
@@ -212,7 +218,7 @@ echo "✅ 배포 완료!"
                 : 'bg-green-600 hover:bg-green-700'
             } text-white`}
           >
-            {deploymentStatus === 'deploying' ? '배포 중...' : '🚀 Vercel에 배포하기'}
+            {deploymentStatus === 'deploying' ? '배포 중...' : '🚀 배포 시뮬레이션 실행'}
           </button>
 
           {/* 배포 상태 */}
@@ -224,7 +230,7 @@ echo "✅ 배포 완료!"
                 deploymentStatus === 'error' ? 'bg-red-100 text-red-800' :
                 'bg-blue-100 text-blue-800'
               }`}>
-                {deploymentStatus === 'success' && '✅ 배포 성공!'}
+                {deploymentStatus === 'success' && '✅ 배포 시뮬레이션 완료!'}
                 {deploymentStatus === 'error' && '❌ 배포 실패'}
                 {deploymentStatus === 'deploying' && '🔄 배포 중...'}
               </div>
@@ -246,18 +252,11 @@ echo "✅ 배포 완료!"
           {/* 배포 성공 시 URL 표시 */}
           {deploymentUrl && (
             <div className="mt-4 p-4 bg-white rounded border">
-              <h4 className="font-medium mb-2">🎉 배포 완료!</h4>
+              <h4 className="font-medium mb-2">🎉 배포 시뮬레이션 완료!</h4>
               <div className="space-y-2">
                 <div>
-                  <span className="font-medium">배포 URL:</span>
-                  <a
-                    href={deploymentUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="ml-2 text-blue-600 hover:text-blue-800 underline"
-                  >
-                    {deploymentUrl}
-                  </a>
+                  <span className="font-medium">시뮬레이션 URL:</span>
+                  <span className="ml-2 text-blue-600">{deploymentUrl}</span>
                   <button
                     onClick={() => copyToClipboard(deploymentUrl)}
                     className="ml-2 text-blue-600 hover:text-blue-800"
@@ -268,7 +267,7 @@ echo "✅ 배포 완료!"
                 <div>
                   <span className="font-medium">API 엔드포인트:</span>
                   <code className="ml-2 bg-gray-100 px-2 py-1 rounded text-sm">
-                    {deploymentUrl}/api/scrape
+                    {deploymentUrl}/api/execute-workflow
                   </code>
                 </div>
               </div>
@@ -277,10 +276,10 @@ echo "✅ 배포 완료!"
                   onClick={testApiEndpoint}
                   className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
                 >
-                  API 테스트
+                  API 테스트 (시뮬레이션)
                 </button>
                 <button
-                  onClick={() => window.open(`${deploymentUrl}/api/docs`, '_blank')}
+                  onClick={() => alert('실제 배포 후 문서를 확인할 수 있습니다.')}
                   className="px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700"
                 >
                   API 문서 보기
@@ -288,6 +287,28 @@ echo "✅ 배포 완료!"
               </div>
             </div>
           )}
+        </div>
+      </div>
+
+      {/* 실제 배포 가이드 */}
+      <div className="bg-gray-50 p-6 rounded-lg">
+        <h3 className="text-lg font-semibold mb-3">실제 배포 가이드</h3>
+        <div className="space-y-4">
+          <div className="bg-white p-4 rounded border">
+            <h4 className="font-medium mb-2">1. Vercel CLI 설치</h4>
+            <pre className="text-sm bg-gray-100 p-2 rounded">npm install -g vercel</pre>
+          </div>
+          <div className="bg-white p-4 rounded border">
+            <h4 className="font-medium mb-2">2. 프로젝트 배포</h4>
+            <pre className="text-sm bg-gray-100 p-2 rounded">vercel --prod</pre>
+          </div>
+          <div className="bg-white p-4 rounded border">
+            <h4 className="font-medium mb-2">3. 환경 변수 설정</h4>
+            <pre className="text-sm bg-gray-100 p-2 rounded">
+vercel env add OPENAI_API_KEY production{'\n'}
+vercel env add PLAYWRIGHT_API_KEY production
+            </pre>
+          </div>
         </div>
       </div>
 
@@ -299,13 +320,13 @@ echo "✅ 배포 완료!"
         </p>
         <div className="space-y-2">
           <button
-            onClick={() => alert('브라우저 자동화 테스트 실행 중... (구현 예정)')}
+            onClick={() => alert('브라우저 자동화 테스트 시뮬레이션 실행됨')}
             className="px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700"
           >
-            🤖 자동화 테스트 실행
+            🤖 자동화 테스트 시뮬레이션
           </button>
           <div className="text-sm text-gray-500">
-            * Playwright를 사용한 E2E 테스트 실행
+            * 실제 환경에서는 Playwright를 사용한 E2E 테스트가 실행됩니다.
           </div>
         </div>
       </div>
@@ -317,14 +338,20 @@ echo "✅ 배포 완료!"
           <div className="bg-white p-4 rounded border">
             <h4 className="font-medium mb-2">성능 모니터링</h4>
             <p className="text-sm text-gray-600 mb-3">API 응답 시간 및 사용량 추적</p>
-            <button className="px-3 py-1 bg-gray-600 text-white rounded text-sm hover:bg-gray-700">
+            <button 
+              onClick={() => alert('실제 배포 후 Vercel 대시보드에서 확인 가능')}
+              className="px-3 py-1 bg-gray-600 text-white rounded text-sm hover:bg-gray-700"
+            >
               대시보드 보기
             </button>
           </div>
           <div className="bg-white p-4 rounded border">
             <h4 className="font-medium mb-2">로그 관리</h4>
             <p className="text-sm text-gray-600 mb-3">에러 로그 및 액세스 로그 확인</p>
-            <button className="px-3 py-1 bg-gray-600 text-white rounded text-sm hover:bg-gray-700">
+            <button 
+              onClick={() => alert('실제 배포 후 Vercel 대시보드에서 확인 가능')}
+              className="px-3 py-1 bg-gray-600 text-white rounded text-sm hover:bg-gray-700"
+            >
               로그 보기
             </button>
           </div>
