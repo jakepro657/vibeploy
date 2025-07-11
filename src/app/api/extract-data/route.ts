@@ -1,4 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
+const os = require('os');
+const path = require('path');
 
 export async function POST(request: NextRequest) {
   try {
@@ -1287,10 +1289,13 @@ async function extractWithPlaywright(url: string, schema: any, actions?: any[], 
   const { chromium } = require('playwright');
   
   console.log('🌐 Chromium 브라우저를 시작합니다...');
+
+  const userDataDir = path.join(os.tmpdir(), 'playwright-user-data-vibeploy');
   
-  const browser = await chromium.launch({
-    headless: true, // 개발 시에는 false로 변경하여 브라우저 확인 가능
+  const context = await chromium.launchPersistentContext(userDataDir, {
+    headless: false, // 반드시 False (사람처럼 보이려면 headful)
     args: [
+      "--start-maximized", // 최대화된 창
       '--no-sandbox', 
       '--disable-setuid-sandbox',
       '--disable-dev-shm-usage',
@@ -1299,25 +1304,40 @@ async function extractWithPlaywright(url: string, schema: any, actions?: any[], 
       '--disable-web-security',
       '--disable-features=VizDisplayCompositor',
       '--disable-blink-features=AutomationControlled' // 자동화 탐지 방지
-    ]
-  });
-
-  const context = await browser.newContext({
+    ],
     userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36',
     javaScriptEnabled: true,
     acceptDownloads: true,
     ignoreHTTPSErrors: true,
     locale: 'ko-KR',
     timezoneId: 'Asia/Seoul',
+    viewport: null, // 실제 브라우저처럼 반응형 해상도
   });
   
   const page = await context.newPage();
 
-  await page.setViewportSize({ width: 1920, height: 1080 });
-  await page.setExtraHTTPHeaders({
-    'Accept-Language': 'ko-KR,ko;q=0.9,en-US;q=0.8,en;q=0.7',
-    'Accept-Encoding': 'gzip, deflate, br',
-  });
+  // 자동화 탐지 우회를 위한 자바스크립트 삽입
+  await context.addInitScript(`
+    // navigator.webdriver 제거
+    Object.defineProperty(navigator, 'webdriver', { get: () => undefined });
+
+    // plugins
+    Object.defineProperty(navigator, 'plugins', {
+        get: () => [1, 2, 3],
+    });
+
+    // languages
+    Object.defineProperty(navigator, 'languages', {
+        get: () => ['ko-KR', 'en-US'],
+    });
+
+    // permissions.query 우회
+    const originalQuery = window.navigator.permissions.query;
+    window.navigator.permissions.query = (parameters) =>
+        parameters.name === 'notifications'
+            ? Promise.resolve({ state: typeof Notification !== 'undefined' ? Notification.permission : 'prompt' })
+            : originalQuery(parameters);
+  `);
   
   try {
     console.log('📄 새 페이지를 생성했습니다.');
@@ -1356,8 +1376,8 @@ async function extractWithPlaywright(url: string, schema: any, actions?: any[], 
     } else {
       // 기본 액션: 페이지 이동
       console.log(`🌍 기본 액션: ${url}로 이동합니다...`);
-      await page.goto(url, { waitUntil: 'networkidle' });
-      await page.waitForTimeout(3000);
+      await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 60000 });
+      await page.waitForTimeout(1000 + Math.random() * 2000);
       
       // 초기 팝업 처리
       await handlePopups(page);
@@ -1371,12 +1391,12 @@ async function extractWithPlaywright(url: string, schema: any, actions?: any[], 
     const extractedData = await extractDataWithVision(page, dataSchema);
     
     console.log('✅ 데이터 추출 완료:', Object.keys(extractedData));
-    await browser.close();
+    await context.close();
     return extractedData;
     
   } catch (error) {
     console.error('❌ 브라우저 작업 중 오류 발생:', error);
-    await browser.close();
+    await context.close();
     throw error;
   }
 }
@@ -1977,8 +1997,18 @@ async function attemptErrorRecovery(page: any, action: any, error: any) {
     // 네트워크 에러 복구
     if (error.message?.includes('net::') || error.message?.includes('Network')) {
       console.log('🌐 네트워크 에러 복구 시도');
-      await page.waitForTimeout(10000);
-      await page.reload({ waitUntil: 'networkidle' });
+      
+      // HTTP/2 프로토콜 에러 (봇 탐지)
+      if (error.message.includes('ERR_HTTP2_PROTOCOL_ERROR')) {
+        console.log('🛡️ HTTP/2 프로토콜 에러 감지, 봇 탐지 우회 시도');
+        await page.waitForTimeout(5000);
+        // User-Agent 변경 등 다른 전략 시도 가능
+        // 현재는 새로고침만 시도
+      } else {
+        await page.waitForTimeout(10000);
+      }
+      
+      await page.reload({ waitUntil: 'domcontentloaded', timeout: 60000 });
       return true;
     }
     
@@ -2001,7 +2031,8 @@ async function executeAction(page: any, action: any, baseUrl: string, parameters
     case 'navigate':
       const targetUrl = url?.replace('{{url}}', baseUrl) || baseUrl;
       console.log(`🌍 페이지 이동: ${targetUrl}`);
-      await page.goto(targetUrl, { waitUntil: 'networkidle' });
+      await page.goto(targetUrl, { waitUntil: 'domcontentloaded', timeout: 60000 });
+      await page.waitForTimeout(1000 + Math.random() * 2000); // 랜덤 딜레이
       break;
       
     case 'act':
